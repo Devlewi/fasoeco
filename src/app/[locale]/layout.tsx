@@ -43,7 +43,21 @@ export default async function RootLayout(props: Props) {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760088965124508"
           crossOrigin="anonymous"
         />
-
+{/* Google Analytics - Utilisez 'beforeInteractive' ou placez-le plus haut */}
+<Script
+  strategy="afterInteractive" // Gardez afterInteractive pour la performance
+  src="https://www.googletagmanager.com/gtag/js?id=G-X8R816J0PR"
+/>
+<Script id="google-analytics" strategy="afterInteractive">
+  {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-X8R816J0PR', {
+      page_path: window.location.pathname,
+    });
+  `}
+</Script>
 {/*
 <Script
     id="adsense-init"
@@ -482,23 +496,7 @@ export default async function RootLayout(props: Props) {
           </Script>
         </IntlProvider>
       
-       {/* Google Analytics - Script async */}
-       <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-6G7NCZPPCJ"
-        />
-
-        {/* Google Analytics - Initialisation */}
-        <Script id="google-analytics">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-6G7NCZPPCJ', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
+       
       </body>
     </html>
   );

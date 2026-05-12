@@ -45,6 +45,8 @@ export async function generateMetadata({ params }: Props) {
   }
 }
 
+
+
 export default async function PostPage({ params }: Props) {
   const { locale, slug } = await params;
   //console.log("Langue actuelle : ", locale);
