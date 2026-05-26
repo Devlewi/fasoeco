@@ -116,21 +116,24 @@ const whatsappLink = process.env.NEXT_PUBLIC_WHATSAPP_CHANNEL_URL;
 
               
 
-              {post.featured_image ? (
+{post.featured_image ? (
 <>
-<img
-  src={post.featured_image}
-  alt={post.title}
-  loading="lazy"
-  className="w-full min-h-[200px] object-cover rounded-lg mb-6"
-/>
+<div className="relative w-full mb-6 group">
+    {/* L'image principale */}
+    <img
+      src={post.featured_image}
+      alt={post.title}
+      loading="lazy"
+      className="w-full min-h-[200px] max-h-[500px] object-cover rounded-lg"
+    />
 
-{/* Crédit photo affiché ici */}
-{post.photo_credit && (
-        <p className="text-xs text-gray-500 mt-0 mb-0 italic text-left" style={{marginTop:-10}}>
-          {post.photo_credit}
-        </p>
-      )}
+    {/* Le crédit photo positionné en étiquette en bas à droite de l'image */}
+    {post.photo_credit && (
+      <p className="absolute bottom-3 right-3 bg-black/65 text-white text-[11px] font-medium py-1 px-2.5 rounded italic shadow-sm pointer-events-none z-10 m-0 backdrop-blur-[2px]">
+        {post.photo_credit}
+      </p>
+    )}
+  </div>
 </>
 
 ) : (
