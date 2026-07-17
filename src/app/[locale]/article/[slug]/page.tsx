@@ -23,25 +23,41 @@ type Props = {
 
 // ✅ Meta avec Promise pour params
 export async function generateMetadata({ params }: Props) {
-  //const { slug } = await params;
   const { locale, slug } = await params;
+  const defaultTitle = "Senegal Eco | L'actualité économique";
 
   try {
-    const post = await fetchPostMeta(slug, locale);
-    if (!post) return {};
+    let cleanSlug = decodeURIComponent(slug);
+    cleanSlug = cleanSlug.replace(/['’]/g, '');
+
+    // 💡 ON UTILISE fetchPost ICI AUSSI (Puisqu'on sait qu'il fonctionne parfaitement)
+    const post = await fetchPost(cleanSlug, locale);
+    
+    if (!post || !post.title) {
+      return { title: defaultTitle };
+    }
+
+    // Extraction propre du texte du titre
+    // ✅ Version corrigée pour TypeScript (sans toucher à votre logique)
+const targetPost = post as any;
+
+const titleText = typeof targetPost.title === 'object' && targetPost.title?.rendered 
+  ? targetPost.title.rendered 
+  : targetPost.title;
+
     return {
-      title: he.decode(post.title),
-      description: he.decode(post.excerpt),
+      title: `${he.decode(titleText)} | Senegal Eco`,
+      description: post.excerpt ? he.decode(post.excerpt) : "",
       openGraph: {
-        title: he.decode(post.title),
-        description: he.decode(post.excerpt),
-        images: [post.featured_image],
-        //url: post.link,
-        //type: "article",
+        title: he.decode(titleText),
+        description: post.excerpt ? he.decode(post.excerpt) : "",
+        images: post.featured_image ? [post.featured_image] : [],
+        type: "article",
       }
     };
-  } catch {
-    return {};
+  } catch (error) {
+    console.error("Erreur SEO generateMetadata :", error);
+    return { title: defaultTitle };
   }
 }
 

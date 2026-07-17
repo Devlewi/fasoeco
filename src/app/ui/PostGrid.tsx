@@ -14,6 +14,7 @@ type Article = {
   featured_image: string;
   date: string;
   views: number;
+  photo_credit: string;
 };
 
 interface PostGridProps {
